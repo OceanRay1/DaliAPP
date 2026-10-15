@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: reunite
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: STAFF_PIN
+        value: "demo2468"
+      - key: SEED_DEMO
+        value: "1"
+      - key: RETENTION_DAYS
+        value: "30"

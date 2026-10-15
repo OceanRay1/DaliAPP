@@ -1,0 +1,29 @@
+:root{--g:#14532d;--g2:#166534;--bg:#f3f6f4;--line:#d1d5db;--ink:#1b1b1b;--muted:#4b5563}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.45}
+header{background:linear-gradient(135deg,#14532d,#15803d);color:#fff;padding:22px 18px;text-align:center}
+header h1{margin:0;font-size:28px;letter-spacing:.5px}
+header p{margin:4px 0 0;opacity:.92;font-size:15px}
+nav{display:flex;gap:6px;padding:8px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+nav button{flex:1;padding:12px 4px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--g);font-size:15px;font-weight:600;margin:0}
+nav button:hover{background:#ecfdf3}
+nav button.on{background:var(--g);color:#fff;border-color:var(--g)}
+main{max-width:600px;margin:0 auto;padding:16px}
+main>section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+h2{margin:0 0 8px;font-size:22px}h3{margin:18px 0 6px;font-size:18px}
+label{display:block;margin:12px 0;font-weight:600;font-size:15px}
+input,textarea,select{display:block;width:100%;padding:11px 12px;font-size:16px;font-family:inherit;border:1px solid #9ca3af;border-radius:8px;margin-top:5px;font-weight:400;background:#fff}
+input:focus,textarea:focus,select:focus{outline:2px solid #86efac;border-color:var(--g)}
+textarea{min-height:70px}
+fieldset{border:1px solid var(--line);border-radius:10px;margin:14px 0;padding:6px 12px}
+legend{font-weight:600;padding:0 6px;font-size:15px}
+label.r{font-weight:400;display:flex;gap:10px;align-items:flex-start}
+label.r input{width:auto;margin-top:5px}
+button{padding:12px 20px;font-size:16px;font-weight:600;border:0;border-radius:10px;background:var(--g);color:#fff;cursor:pointer;margin:6px 6px 6px 0}
+button:hover{background:var(--g2)}
+button.alt{background:#6b7280}button.danger{background:#b91c1c}
+.card{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+.code{font-size:38px;letter-spacing:8px;font-weight:700;background:#fef9c3;padding:12px;text-align:center;border-radius:8px;font-family:ui-monospace,monospace}
+.muted{color:var(--muted);font-size:14px}.err{color:#b91c1c;font-weight:600}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px}

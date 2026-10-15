@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reunite – Find your family</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>Reunite</h1><p>Find family after the evacuation. No phone or ID needed.</p></header>
+<nav>
+  <button data-tab="find" class="on">Find someone</button>
+  <button data-tab="checkin">I'm safe</button>
+  <button data-tab="code">My code</button>
+  <button data-tab="staff">Staff</button>
+</nav>
+<main>
+<section id="tab-find">
+  <h2>Looking for someone?</h2>
+  <form id="searchForm">
+    <label>Their name (any spelling is fine)<input name="name" required></label>
+    <label>About how old? (optional)<input name="age" type="number" min="0" max="120"></label>
+    <button>Search</button>
+  </form>
+  <div id="searchOut"></div>
+  <hr>
+  <h3>Can't find them? Leave a note.</h3>
+  <p class="muted">We will keep watching. If they check in, we'll ask them if they want to be in touch. Nothing is shared without their OK.</p>
+  <form id="reportForm"><input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+    <label>Who are you looking for?<input name="name" required></label>
+    <label>Their age (approx.)<input name="age" type="number" min="0" max="120"></label>
+    <label>What do they look like / where were they? (optional)<textarea name="description"></textarea></label>
+    <label>Your name<input name="seekerName"></label>
+    <label>How can they reach you? (phone, or the shelter you're at)<input name="seekerContact"></label>
+    <label>Message for them<textarea name="message"></textarea></label>
+    <button>Leave note</button>
+  </form>
+  <div id="reportOut"></div>
+</section>
+
+<section id="tab-checkin" hidden>
+  <h2>Let your family know you're safe</h2>
+  <p class="muted">A volunteer can fill this in for you. No ID needed. A nickname is OK.</p>
+  <form id="checkinForm"><input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+    <label>Name (or nickname, or leave blank)<input name="name"></label>
+    <label>Age (approx.)<input name="age" type="number" min="0" max="120"></label>
+    <label>Group
+      <select name="ageGroup"><option value="adult">Adult</option><option value="child">Child (under 18)</option><option value="senior">Older adult (65+)</option></select>
+    </label>
+    <label>Where are you now? (shelter, hotel, relative's town)<input name="shelter" list="shelters"></label>
+    <datalist id="shelters"></datalist>
+    <label>Anything that helps family recognise you (home street, school, hair, clothing)<textarea name="description"></textarea></label>
+    <label>Contact note (phone if you have one, or "ask at front desk")<input name="contactNote"></label>
+    <fieldset>
+      <legend>Who can see that I'm here?</legend>
+      <label class="r"><input type="radio" name="visibility" value="open"> Anyone searching my name can see where I am</label>
+      <label class="r"><input type="radio" name="visibility" value="ask" checked> Ask me first. Nobody sees anything until I say yes</label>
+      <label class="r"><input type="radio" name="visibility" value="hidden"> Don't tell anyone. I'm only checking in for aid</label>
+    </fieldset>
+    <button>Check in</button>
+  </form>
+  <div id="checkinOut"></div>
+</section>
+
+<section id="tab-code" hidden>
+  <h2>Check with your code</h2>
+  <form id="codeForm">
+    <label>Your 6-character code<input name="code" required maxlength="6" style="text-transform:uppercase"></label>
+    <button>Look up</button>
+  </form>
+  <div id="codeOut"></div>
+</section>
+
+<section id="tab-staff" hidden>
+  <h2>Staff</h2>
+  <form id="pinForm"><label>Staff PIN<input name="pin" type="password" required></label><button>Sign in</button></form>
+  <div id="staffArea" hidden>
+    <div id="staffCounts" class="muted"></div>
+    <h3>Matches to confirm <span id="pendCount" class="pill good"></span></h3>
+    <p class="muted">The system already found these. Ask the person privately, in person, then tap one button.</p>
+    <div id="staffPending"></div>
+    <details><summary>All people checked in</summary>
+      <input id="staffQ" placeholder="Search name, shelter or code"><div id="staffPeople"></div></details>
+    <details><summary>Import paper records</summary>
+      <p class="muted">One person per line: <code>name, age, shelter, visibility(open/ask/hidden), description</code></p>
+      <textarea id="importText" rows="5"></textarea>
+      <button id="importBtn">Import</button> <span id="importOut"></span></details>
+  </div>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
