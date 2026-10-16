@@ -64,8 +64,8 @@ function dbAll(sql, params = []) {
   return rows;
 }
 
-// ---------- helpers ----------
-const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I: easy to read aloud / write down
+// Helpers 
+const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; 
 const newCode = () => Array.from({ length: 6 }, () => ALPHABET[crypto.randomInt(ALPHABET.length)]).join('');
 const now = () => Date.now();
 const clean = (s, n = 300) => (s == null ? '' : String(s).trim().slice(0, n));
@@ -80,7 +80,8 @@ function lev(a, b) {
       d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
   return d[a.length][b.length];
 }
-// Tolerant of spelling variants, order swaps, missing middle names.
+
+// Help be tolerant of spelling variants, order swaps, missing middle names, and o/slight changes
 function nameScore(a, b) {
   const A = norm(a), B = norm(b);
   if (!A.length || !B.length) return 0;
@@ -119,7 +120,7 @@ function createPerson(b) {
   let group = ['child', 'adult', 'senior'].includes(b.ageGroup) ? b.ageGroup : age != null ? (age < 18 ? 'child' : age >= 65 ? 'senior' : 'adult') : 'adult';
   if (age != null && age < 18) group = 'child';
   let vis = ['open', 'ask', 'hidden'].includes(b.visibility) ? b.visibility : 'ask';
-  if (group === 'child' && vis === 'open') vis = 'ask'; // children are never publicly listed
+  if (group === 'child' && vis === 'open') vis = 'ask'; // children NEVER publicly listed
   const code = newCode();
   dbRun(
     `INSERT INTO people(code,name,age,age_group,description,shelter,visibility,contact_note,created_at,updated_at)
@@ -132,25 +133,25 @@ function createPerson(b) {
   return person;
 }
 
-// ---------- app ----------
+// App 
 const app = express();
-app.set('trust proxy', 1); // behind Render's proxy: rate limits must see the real client IP
+app.set('trust proxy', 1); 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', rateLimit({ windowMs: 60000, limit: 60, standardHeaders: true, legacyHeaders: false }));
-const strict = rateLimit({ windowMs: 60000, limit: 15 }); // anti-scraping on search / code lookups
-// Anti-flooding on writes. Staff (PIN) are exempt since a whole shelter may share one IP.
+const strict = rateLimit({ windowMs: 60000, limit: 15 }); // Anti-scraping on search 
+// Anti-flooding on writes but Staff (PIN) are exempt since a whole shelter may share one IP
 const writeLimit = (max) => rateLimit({
   windowMs: 10 * 60 * 1000, limit: max, skip: (req) => isStaff(req),
   message: { error: 'Too many submissions from this device. Please wait a few minutes or ask a staff member for help.' },
 });
 const RECENT = () => now() - 10 * 60 * 1000;
 
-// Check in ("I'm safe") -- usable by the person or a volunteer on a shared device
+// Check in ("I'm safe") which usable by the person or a volunteer on a shared device
 app.post('/api/people', writeLimit(30), (req, res) => {
   const b = req.body || {};
   if (b.website) return res.json({ code: 'XXXXXX', name: '', visibility: 'ask', ageGroup: 'adult' }); // honeypot: bots fill hidden field
-  // Duplicate guard: identical check-in in the last 10 minutes returns the same record (double taps)
+  // Duplicate guard that see if identical check-in in the last 10 minutes returns the same record (double taps)
   const dup = dbGet('SELECT * FROM people WHERE name=? AND shelter=? AND age IS ? AND description=? AND created_at>?',
     [clean(b.name, 100) || 'Name not given', clean(b.shelter, 120), toAge(b.age), clean(b.description, 500), RECENT()]);
   if (dup) return res.json({ code: dup.code, name: dup.name, visibility: dup.visibility, ageGroup: dup.age_group });
@@ -158,7 +159,7 @@ app.post('/api/people', writeLimit(30), (req, res) => {
   res.json({ code: p.code, name: p.name, visibility: p.visibility, ageGroup: p.age_group });
 });
 
-// Public search: ONLY people who chose "open" (never children, never 'ask'/'hidden')
+// Public search ONLY people who chose "open" (not children or 'ask'/'hidden' option)
 app.post('/api/search', strict, (req, res) => {
   const { name, age } = req.body || {};
   if (!clean(name)) return res.status(400).json({ error: 'Please enter a name' });
@@ -173,7 +174,7 @@ app.post('/api/search', strict, (req, res) => {
   res.json({ results: out });
 });
 
-// "Leave a note": seeker registers who they're looking for; we match now and on future check-ins
+// "Leave a note" where seeker registers who they're looking for which matches now and on future check-ins
 app.post('/api/reports', strict, writeLimit(10), (req, res) => {
   const b = req.body || {};
   if (b.website) return res.json({ code: 'XXXXXX' });
@@ -189,10 +190,10 @@ app.post('/api/reports', strict, writeLimit(10), (req, res) => {
   );
   const report = dbGet('SELECT * FROM reports WHERE code=?', [code]);
   for (const p of dbAll("SELECT * FROM people WHERE visibility!='hidden'")) matchPair(report, p);
-  res.json({ code }); // identical response whether or not a match exists
+  res.json({ code }); // Same response whether or not a match exists
 });
 
-// Seeker status. 'declined' and 'pending' both look like "waiting" so a refusal leaks nothing.
+// Seeker status
 app.get('/api/reports/:code', strict, (req, res) => {
   const r = dbGet('SELECT * FROM reports WHERE code=?', [clean(req.params.code).toUpperCase()]);
   if (!r) return res.status(404).json({ error: 'Code not found' });
@@ -203,7 +204,7 @@ app.get('/api/reports/:code', strict, (req, res) => {
   res.json({ kind: 'report', lookingFor: r.name, status: found.length ? 'found' : 'waiting', connections: found });
 });
 
-// Person view: pending requests from people looking for them
+// Person view where person can see pending requests from people looking for them
 app.get('/api/people/:code', strict, (req, res) => {
   const p = dbGet('SELECT * FROM people WHERE code=?', [clean(req.params.code).toUpperCase()]);
   if (!p) return res.status(404).json({ error: 'Code not found' });
@@ -243,7 +244,7 @@ app.delete('/api/people/:code', (req, res) => {
   res.json({ ok: true });
 });
 
-// ---------- staff ----------
+// Staff
 app.get('/api/staff/overview', staffOnly, (req, res) => {
   const q = clean(req.query.q).toLowerCase();
   let people = dbAll('SELECT * FROM people ORDER BY updated_at DESC LIMIT 500');
@@ -256,7 +257,7 @@ app.get('/api/staff/overview', staffOnly, (req, res) => {
   res.json({ people, pending, counts: { people: pc?.c || 0, reports: rc?.c || 0 } });
 });
 
-// Bulk import for paper records: [{name,age,ageGroup,shelter,visibility,description}]
+// A bulk import for paper records
 app.post('/api/staff/import', staffOnly, (req, res) => {
   const rows = Array.isArray(req.body.rows) ? req.body.rows.slice(0, 2000) : [];
   const codes = rows.map((r) => createPerson(r).code);

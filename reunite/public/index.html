@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reunite – Find your family</title>
+<title>Reunite & Find your family</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><h1>Reunite</h1><p>Find family after the evacuation. No phone or ID needed.</p></header>
+<header><h1>Reunite</h1><p>Find family post hurricane (NO PHONE/ID REQUIRED)</p></header>
 <nav>
   <button data-tab="find" class="on">Find someone</button>
   <button data-tab="checkin">I'm safe</button>
-  <button data-tab="code">My code</button>
+  <button data-tab="code">Code Check In</button>
   <button data-tab="staff">Staff</button>
 </nav>
 <main>
@@ -49,13 +49,13 @@
     </label>
     <label>Where are you now? (shelter, hotel, relative's town)<input name="shelter" list="shelters"></label>
     <datalist id="shelters"></datalist>
-    <label>Anything that helps family recognise you (home street, school, hair, clothing)<textarea name="description"></textarea></label>
-    <label>Contact note (phone if you have one, or "ask at front desk")<input name="contactNote"></label>
+    <label>Anything that helps family recognise you (home street, school, hair, clothing, etc)<textarea name="description"></textarea></label>
+    <label>Contact note (phone if you have one)<input name="contactNote"></label>
     <fieldset>
       <legend>Who can see that I'm here?</legend>
-      <label class="r"><input type="radio" name="visibility" value="open"> Anyone searching my name can see where I am</label>
-      <label class="r"><input type="radio" name="visibility" value="ask" checked> Ask me first. Nobody sees anything until I say yes</label>
-      <label class="r"><input type="radio" name="visibility" value="hidden"> Don't tell anyone. I'm only checking in for aid</label>
+      <label class="r"><input type="radio" name="visibility" value="open"> ANYONE searching my name can see where I am</label>
+      <label class="r"><input type="radio" name="visibility" value="ask" checked> Ask me first (Nobody sees anything until I say yes) </label>
+      <label class="r"><input type="radio" name="visibility" value="hidden"> Don't tell anyone (I'm only checking in for aid) </label>
     </fieldset>
     <button>Check in</button>
   </form>
@@ -77,7 +77,7 @@
   <div id="staffArea" hidden>
     <div id="staffCounts" class="muted"></div>
     <h3>Matches to confirm <span id="pendCount" class="pill good"></span></h3>
-    <p class="muted">The system already found these. Ask the person privately, in person, then tap one button.</p>
+    <p class="muted">The system already found these. Ask the person privately or in person, then tap one button.</p>
     <div id="staffPending"></div>
     <details><summary>All people checked in</summary>
       <input id="staffQ" placeholder="Search name, shelter or code"><div id="staffPeople"></div></details>

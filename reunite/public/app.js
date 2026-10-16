@@ -23,14 +23,14 @@ const formData = (f) => Object.fromEntries(new FormData(f));
 const codeBox = (c) => `<div class="card"><p>Write this code down or tell a volunteer. You need it to check back:</p><div class="code">${esc(c)}</div></div>`;
 const fail = (el, e) => (el.innerHTML = `<p class="err">${esc(e.message)}</p>`);
 
-// tabs
+// Tabs
 document.querySelectorAll('nav button').forEach((b) => b.onclick = () => {
   document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x === b));
   document.querySelectorAll('main > section').forEach((s) => (s.hidden = s.id !== 'tab-' + b.dataset.tab));
   if (b.dataset.tab === 'staff' && PIN) loadStaff();
 });
 
-// search
+// Search
 $('#searchForm').onsubmit = async (e) => {
   e.preventDefault(); const out = $('#searchOut');
   try {
@@ -46,7 +46,7 @@ $('#reportForm').onsubmit = async (e) => {
   catch (er) { fail(out, er); }
 };
 
-// check-in
+// Check-in
 $('#checkinForm').onsubmit = async (e) => {
   if (!guard(e)) return; const out = $('#checkinOut');
   try { localStorage.setItem('shelter', e.target.shelter.value); } catch {}
@@ -57,7 +57,6 @@ $('#checkinForm').onsubmit = async (e) => {
   } catch (er) { fail(out, er); }
 };
 
-// my code
 $('#codeForm').onsubmit = async (e) => {
   e.preventDefault(); const out = $('#codeOut'); const code = formData(e.target).code.trim().toUpperCase();
   try {
@@ -96,7 +95,7 @@ document.addEventListener('click', async (e) => {
   } catch (er) { b.disabled = false; alert(er.message); }
 });
 
-// staff
+// Staff
 $('#pinForm').onsubmit = (e) => { e.preventDefault(); PIN = formData(e.target).pin; sessionStorage.setItem('pin', PIN); loadStaff(); };
 $('#staffQ').oninput = () => loadStaff();
 async function loadStaff() {
@@ -125,7 +124,7 @@ async function loadStaff() {
     $('#shelters').innerHTML = [...new Set(d.people.map((p) => p.shelter).filter(Boolean))].map((s) => `<option value="${esc(s)}">`).join('');
   } catch (er) { PIN = ''; sessionStorage.removeItem('pin'); $('#pinForm').hidden = false; $('#staffArea').hidden = true; alert(er.message); }
 }
-setInterval(() => { if (PIN && !$('#tab-staff').hidden) loadStaff(); }, 15000); // auto-refresh queue
+setInterval(() => { if (PIN && !$('#tab-staff').hidden) loadStaff(); }, 15000); // Auto-refresh queue
 $('#importBtn').onclick = async () => {
   const rows = $('#importText').value.split('\n').map((l) => l.split(',').map((x) => x.trim())).filter((a) => a[0])
     .map(([name, age, shelter, visibility, ...d]) => ({ name, age, shelter, visibility, description: d.join(', ') }));
