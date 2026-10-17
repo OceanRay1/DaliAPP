@@ -4,15 +4,33 @@
 **Staff PIN for the demo:** `2468`
 
 ## Overview
-This project was created for my application to the DALI Lab when proposed with a scenario where 400,000 people evacuated in two days, thousands of families got separated, most people don't have phone, ID, or desire to be found, and a database that balances fulfilling all of these consumer desires is needed.
+This project was created for my application to Dartmouth's DALI Lab when proposed with a scenario where 400,000 people evacuated in two days, thousands of families got separated, most people don't have phone, ID, or desire to be found, and a database that balances fulfilling all of these consumer desires is needed.
 
 **Reunite** was made to, well, help people do just that. It lets people check in at any shelter with just a nickname, get a short code, and be found by family only if they choose. Families have the ability to search by name or leave a note, with the system matching notes against check-ins automatically, including future ones. Shelter staff oversee the confirmation of matches with one tap. Importantly, NOBODY is revealed without their own yes.
 
 ### Screenshots
-<!-- Add screenshots here, for example: -->
-<!-- ![Find someone](screenshots/find.png) -->
-<!-- ![I'm safe and privacy options](screenshots/checkin.png) -->
-<!-- ![Staff match queue](screenshots/staff.png) -->
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/Find.png" alt="Find someone and leave a note" width="100%">
+      <br><sub><b>Find someone.</b> Search by name, or leave a note that matches future check-ins.</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/CheckIn.png" alt="I'm safe check-in with privacy options" width="100%">
+      <br><sub><b>I'm safe.</b> Put in your code (both finders & seekers) with no ID needed, and the seeker chooses who can see them.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="assets/Staff.png" alt="Staff match queue" width="100%">
+      <br><sub><b>Staff queue.</b> Matches are pre-found; staff confirm with one tap.</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="assets/Safe.png" alt="Consent request from a family member" width="100%">
+      <br><sub><b>Share selectively.</b> The found person decides whether to share. Nothing is revealed without a yes.</sub>
+    </td>
+  </tr>
+</table>
 
 ### Key Features
 * **Nickname-only check-in:** no ID, no phone, no immigration or personal documents asked
@@ -32,14 +50,14 @@ Five categories of features (*Everything labeled built has plenty of room to exp
 2. **Matching across shelters** (even with fuzzy names, ages, descriptions): **Built**
 3. **Consent and privacy controls** (who may see whom): **Built**
 4. **Staff review queue:** **Built**
-5. **Future features during expansion** **Not built**
+5. **Future features during expansion** (start of, but not exhaustive list): **Not built**
    * Per-shelter staff accounts with audit logs instead of one shared PIN 
    * Multilingual support since there's no guarantee the 400,000 people of the region speak english
    * Photo matching, only with consent
    * SMS or email notification to the seeker when a match is approved
    * Offline-first app that syncs when connectivity returns, for shelters on paper or bad wifi
 
-I built parts 1 to 4 to see if at a high-level the system design could be **useful and safe**. The features in part 5 are the first features I would ideate with more time.
+I built parts 1 to 4 to see if at a high-level the system design could be **useful and safe**. The features in part 5 are the first features I would think of adding with more time.
 
 ## Design
 
@@ -51,7 +69,7 @@ I built parts 1 to 4 to see if at a high-level the system design could be **usef
 ### The Biggest Technical Choice: Which Part I Chose and Why
 **The biggest tradeoff:** Consent-based matching. The hardest problem is ensuring that those who want to be found can be, without threatening those who don't want to be. A person who fled an abuser and a family looking for a lost child use the same system, so the default is that nothing is revealed until the found person says yes. As a result there **is an inherent tradeoff with longer wait times**, for however long it typically takes the found person to share their information. Despite this, the aim of this app is fundamentally to **ensure safety**, even if some efficiency is sacrificed as a by-product.
 
-**Second tradeoff:** Simplicity over durability. The hardest constraint in this scenario is that the system has to work *tonight*, in shelters with weak wifi and tired non-technical volunteers, and a database that needs setup, accounts, or a build step is one more thing that can break at 2 a.m. So I chose sql.js (SQLite running in WASM, saved to a single file) with no native build and zero configuration on Render's free tier. As a result there **is an inherent tradeoff with data durability and scale**: sql.js rewrites the whole database file on every write, and Render's free disk is ephemeral, so records are lost on a redeploy and heavy traffic would slow down. Despite this, the aim of this prototype is fundamentally to **prove the design is useful and safe**, even if some reliability is sacrificed as a by-product. In production this would move to a managed Postgres database with backups, which fits with the 30-day retention and delete-on-request already built in.
+**Second tradeoff:** Simplicity over durability. The hardest constraint in this scenario is that the system has to work *tonight*, in shelters with weak wifi and tired non-technical volunteers, and a database that needs setup, accounts, or a build step is one more thing that can break at 2 a.m. So I chose sql.js (SQLite running in WASM, saved to a single file) with no native build and zero configuration on Render's free tier. As a result there **is a given tradeoff with data durability and scale**: sql.js rewrites the whole database file on every write, and Render's free disk is ephemeral, so records are lost on a redeploy and heavy traffic would slow down. Despite this, the aim of this prototype is fundamentally to **prove the design is useful and safe**, even if some reliability is sacrificed as a by-product. In production this would move to a managed Postgres database with backups, which fits with the 30-day retention and delete-on-request already built in.
 
 ### Assumptions
 * Every shelter has at least one shared device on weak wifi; survivors and seekers rarely have their own phone.
