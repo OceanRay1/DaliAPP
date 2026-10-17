@@ -8,25 +8,25 @@ This project was created for my application to Dartmouth's DALI Lab when propose
 
 **Reunite** was made to, well, help people do just that. It lets people check in at any shelter with just a nickname, get a short code, and be found by family only if they choose. Families have the ability to search by name or leave a note, with the system matching notes against check-ins automatically, including future ones. Shelter staff oversee the confirmation of matches with one tap. Importantly, NOBODY is revealed without their own yes.
 
-### Screenshots
+### POV: The User
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="assets/Find.png" alt="Find someone and leave a note" width="100%">
+      <img src="reunite/assets/Find.png" alt="Find someone and leave a note" width="100%">
       <br><sub><b>Find someone.</b> Search by name, or leave a note that matches future check-ins.</sub>
     </td>
     <td align="center" width="50%">
-      <img src="assets/CheckIn.png" alt="I'm safe check-in with privacy options" width="100%">
+      <img src="reunite/assets/CheckIn.png" alt="I'm safe check-in with privacy options" width="100%">
       <br><sub><b>I'm safe.</b> Put in your code (both finders & seekers) with no ID needed, and the seeker chooses who can see them.</sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <img src="assets/Staff.png" alt="Staff match queue" width="100%">
+      <img src="reunite/assets/Staff.png" alt="Staff match queue" width="100%">
       <br><sub><b>Staff queue.</b> Matches are pre-found; staff confirm with one tap.</sub>
     </td>
     <td align="center" width="50%">
-      <img src="assets/Safe.png" alt="Consent request from a family member" width="100%">
+      <img src="reunite/assets/Safe.png" alt="Consent request from a family member" width="100%">
       <br><sub><b>Share selectively.</b> The found person decides whether to share. Nothing is revealed without a yes.</sub>
     </td>
   </tr>
