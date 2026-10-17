@@ -266,11 +266,11 @@ app.post('/api/staff/import', staffOnly, (req, res) => {
 
 function seedDemo() {
   if (process.env.SEED_DEMO !== '1' || dbGet('SELECT COUNT(*) AS c FROM people').c > 0) return;
-  createPerson({ name: 'James Carter', age: 71, ageGroup: 'senior', shelter: 'Riverside Community Center', visibility: 'open', description: 'Grey beard, walks with a cane, from Harbor St.' });
-  createPerson({ name: 'Maria Gonzalez', age: 34, shelter: 'Lincoln High School', visibility: 'ask', description: 'Two kids, red jacket' });
-  createPerson({ name: 'Dani', age: 16, ageGroup: 'child', shelter: 'Eastside Shelter', visibility: 'ask', description: 'Came on the school bus' });
+  createPerson({ code: 'JAMES2', name: 'James Carter', age: 71, ageGroup: 'senior', shelter: 'Riverside Community Center', visibility: 'open', description: 'Grey beard, walks with a cane, from Harbor St.' });
+  createPerson({ code: 'MARIA2', name: 'Maria Gonzalez', age: 34, shelter: 'Lincoln High School', visibility: 'ask', description: 'Two kids, red jacket' });
+  createPerson({ code: 'DANI22', name: 'Dani', age: 16, ageGroup: 'child', shelter: 'Eastside Shelter', visibility: 'ask', description: 'Came on the school bus' });
   createPerson({ name: '', shelter: 'Lincoln High School', visibility: 'hidden' });
-  const code = newCode();
+  const code = 'ANA222';
   dbRun('INSERT INTO reports(code,name,age,description,seeker_name,seeker_contact,message,created_at) VALUES(?,?,?,?,?,?,?,?)',
     [code, 'Maria Gonzales', 35, '', 'Ana (sister)', 'Staying at Hampton Inn, ask front desk', 'I am safe. Where are you?', now()]);
   matchPair(dbGet('SELECT * FROM reports WHERE code=?', [code]), dbGet("SELECT * FROM people WHERE name='Maria Gonzalez'"));

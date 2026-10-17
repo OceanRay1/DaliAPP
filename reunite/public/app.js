@@ -120,7 +120,7 @@ async function loadStaff() {
         <button data-act="respond" data-code="${esc(m.code)}" data-id="${m.id}" data-yes="1">They said yes</button>
         <button class="alt" data-act="respond" data-code="${esc(m.code)}" data-id="${m.id}">No / not them</button></div>`;
     }).join('') : '<p class="muted">Nothing waiting. New matches appear here automatically.</p>';
-    $('#staffPeople').innerHTML = d.people.map((p) => `<div class="card"><b>${esc(p.name)}</b> (${esc(p.age_group)}) · ${esc(p.shelter)} · <code>${esc(p.code)}</code> · ${esc(p.visibility)}</div>`).join('');
+    $('#staffPeople').innerHTML = d.people.map((p) => `<div class="card"><b>${esc(p.name || 'Name not given')}</b> (${esc(p.age_group)}) · ${esc(p.shelter)} · <code>${esc(p.code)}</code> · ${esc(p.visibility)}</div>`).join('');
     $('#shelters').innerHTML = [...new Set(d.people.map((p) => p.shelter).filter(Boolean))].map((s) => `<option value="${esc(s)}">`).join('');
   } catch (er) { PIN = ''; sessionStorage.removeItem('pin'); $('#pinForm').hidden = false; $('#staffArea').hidden = true; alert(er.message); }
 }

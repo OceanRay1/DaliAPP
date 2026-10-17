@@ -27,3 +27,9 @@ button.alt{background:#6b7280}button.danger{background:#b91c1c}
 .muted{color:var(--muted);font-size:14px}.err{color:#b91c1c;font-weight:600}
 hr{border:0;border-top:1px solid var(--line);margin:26px 0}
 code{background:#eef2f0;padding:1px 5px;border-radius:4px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;background:#e5e7eb;color:#374151;margin:0 6px 6px 0}
+.pill.good{background:#dcfce7;color:#14532d}.pill.ok{background:#fef9c3;color:#713f12}.pill.weak{background:#ffedd5;color:#9a3412}.pill.kid{background:#fee2e2;color:#991b1b}
+.match{border-left:6px solid var(--line)}.match.good{border-left-color:#16a34a}.match.ok{border-left-color:#ca8a04}.match.weak{border-left-color:#ea580c}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:480px){.cols{grid-template-columns:1fr}}
+details{margin:14px 0}summary{cursor:pointer;font-weight:600}
